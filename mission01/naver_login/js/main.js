@@ -4,46 +4,51 @@ const user = {
   pw:'spdlqj123!@'
 }
 
-/*
-
-1. email 정규표현식을 사용한 validation
-2. pw 정규표현식을 사용한 validation
-3. 상태 변수 관리
-4. 로그인 버튼을 클릭시 조건처리
-
-*/
-
 const userEmail = document.querySelector('#userEmail');
 const userPassword = document.querySelector('#userPassword');
 const btnLogin = document.querySelector('.btn-login');
-const welcome = 'welcome.html';
+
+let emailPass = false;      // 아이디의 형식이 맞는지 상태를 확인하는 변수
+let pwPass = false;       // 비밀번호의 형식이 맞는지 상태를 확인하는 변수
+
+const welcome = 'welcome.html';   // 로그인 완료 시 넘어가는 환영 페이지
 
 
 // email 정규표현식을 사용한 validation
 function isValidEmail(){
+  let value = this.value;
   
-  if( emailReg(this.value) || this.value === ""){
+  if( emailReg(value) || value === ""){
     // true면 해당 input에 is--invalid 제거
     userEmail.classList.remove('is--invalid');
+    // emailPass = true;
   } else {
     // false면 해당 input에 is--invalid 추가
     userEmail.classList.add('is--invalid');
-    
+    // emailPass = false;
   }
+  // 정규표현식에 맞는 값을 받았을 때의 불린값 true를 할당
+  emailPass = emailReg(value);
+  
 }
 
 
 // pw 정규표현식을 사용한 validation
 function isValidPassword(){
+  let value = this.value;
   
-  if( pwReg(this.value) || this.value === ""){  // 빈문자 
+  if( pwReg(value) || value === ""){  // 빈문자 
     // true면 해당 input에 is--invalid 제거
     userPassword.classList.remove('is--invalid');
+    // pwPass = true;
   } else {
     // false면 해당 input에 is--invalid 추가
     userPassword.classList.add('is--invalid');
-    
+    // pwPass = false;
   }
+  // 정규표현식에 맞는 값을 받았을 때 불린값 true를 할당
+  pwPass = pwReg(value);
+  
 }
 
 // 로그인 버튼 클릭 시 userEmail, userPassword가 모두 일치하면 페이지 이동
@@ -51,29 +56,18 @@ function handleLogin(e){
   // 태그의 기본 링크 이벤트 중단
   e.preventDefault();
   
-  if (userEmail.value === user.id){
-    if(userPassword.value === user.pw){
-      window.location.href = welcome;
-    } else  {
-      // 비밀번호가 틀렸을 경우 
-      alert('입력하신 비밀번호가 일치하지 않습니다.');
+  // 아이디와 비밀번호가 형식을 통과했을 떄 
+  if(emailPass && pwPass){
+    if (userEmail.value === user.id && userPassword.value === user.pw){
+        window.location.href = welcome;
+    } else {
+      alert('아이디 또는 비밀번호가 일치하지 않습니다.');
     }
-  } else {
-    alert('올바른 아이디를 입력해주세요.');
+  } else{
+    // 아이디와 비밀번호가 형식을 통과하지 못했을 떄 
+    alert('아이디 또는 비밀번호 형식이 맞지 않습니다.');
   }
 }
-
-
-// 키입력 받을 때 마다 input 이벤트
-
-// userEmail의 입력값과 emailReg 비교
-userEmail.addEventListener('input', isValidEmail);
-// userEmail의 입력값과 emailReg 비교
-userPassword.addEventListener('input', isValidPassword);
-// 로그인 버튼을 눌렀을 떄 이벤트
-btnLogin.addEventListener('click', handleLogin);
-
-
 
 
 function emailReg(text){
@@ -88,10 +82,14 @@ function pwReg(text){
 }
 
 
+// 키입력 받을 때 마다 input 이벤트
 
-
-
-
+// userEmail의 입력값과 emailReg 비교
+userEmail.addEventListener('input', isValidEmail);
+// userEmail의 입력값과 emailReg 비교
+userPassword.addEventListener('input', isValidPassword);
+// 로그인 버튼을 눌렀을 떄 이벤트
+btnLogin.addEventListener('click', handleLogin);
 
 
 
