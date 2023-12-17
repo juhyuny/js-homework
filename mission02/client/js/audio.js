@@ -12,6 +12,10 @@ class AudioPlayer {
     this.#audio.src = source;
   }
 
+  setAudio(source){
+    this.#audio.src = source;
+  }
+  
   play() {
     this.#audio.play();
   }
@@ -40,3 +44,14 @@ class AudioPlayer {
   }
 }
 
+// 클릭 시 캐릭터에 맞는 오디오 음성
+function audioVoice(name){
+  
+  // 재생되고 있는 음성 멈춤
+  audio.stop();
+  // 오디오 파일 선택
+  audio.setAudio(`./assets/audio/${name}.m4a`);
+  // 맞는 오디오 재생
+  audio.play();
+  
+}
